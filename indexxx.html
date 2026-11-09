@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fill the Shop! – Unit 6 Food Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#2f8f3e;--green-d:#1f6b2b;--green-l:#e3f2df;--red:#d9302a;--ink:#1d2a1f;--muted:#66756a;--bg:#f6f1e7;--gold:#e9a400;--gold-l:#fff4d6;--wood:#c98b4f;--wood-d:#9c6634;}
+*{box-sizing:border-box}
+body{margin:0;font-family:Nunito,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+header{display:flex;align-items:center;gap:16px;padding:10px 24px;background:var(--green);color:#fff;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+header h1{font-family:'Baloo 2',sans-serif;margin:0;font-size:30px;line-height:1}
+header .sub{opacity:.85;font-size:15px;font-weight:600}
+nav{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+nav button{background:rgba(255,255,255,.16);color:#fff;border:0;padding:10px 18px;border-radius:999px;font:800 16px Nunito,sans-serif;cursor:pointer}
+nav button:hover{background:rgba(255,255,255,.28)}
+nav button.on{background:#fff;color:var(--green-d)}
+main{padding:20px 24px 40px;max-width:1500px;margin:0 auto}
+.view{display:none}.view.on{display:block}
+.card{background:#fff;border-radius:18px;padding:20px 24px;box-shadow:0 8px 24px rgba(120,80,30,.1)}
+h2{font-family:'Baloo 2',sans-serif;font-size:28px;margin:0 0 12px;line-height:1.1}
+h3{font-family:'Baloo 2',sans-serif;font-size:22px;margin:0 0 8px}
+.muted{color:var(--muted)}
+.btn{border:0;border-radius:14px;padding:13px 22px;font:800 18px Nunito,sans-serif;cursor:pointer;background:var(--green);color:#fff;transition:transform .08s,filter .15s}
+.btn:hover{filter:brightness(1.07)}.btn:active{transform:scale(.97)}
+.btn.ghost{background:var(--green-l);color:var(--green-d)}
+.btn.red{background:var(--red)}
+.btn.gold{background:var(--gold);color:#2b2000}
+.btn.big{font-size:28px;padding:18px 40px;border-radius:18px}
+kbd{font:700 13px Nunito;background:rgba(0,0,0,.12);border-radius:5px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.toggle{border:2px solid #e3dccd;background:#fff;border-radius:999px;padding:10px 16px;font:800 17px Nunito;cursor:pointer;color:var(--muted)}
+.toggle.on{border-color:var(--green);background:var(--green-l);color:var(--green-d)}
+.label{font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:12px 0 6px}
+
+/* setup */
+.setup-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px}
+.rules-list{margin:0;padding-left:22px;font-size:18px;line-height:1.65}
+.setup-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px;align-items:center}
+
+/* play top */
+.goal{display:flex;align-items:center;gap:14px;margin-bottom:14px;flex-wrap:wrap}
+.goal .txt{font:800 22px 'Baloo 2';white-space:nowrap}
+.goal .txt b{color:var(--green-d);font-size:28px}
+.gbar{flex:1;min-width:200px;height:22px;background:#e8dfcd;border-radius:99px;overflow:hidden;position:relative}
+.gbar div{height:100%;background:linear-gradient(90deg,#57b85f,#2f8f3e);border-radius:99px;transition:width .5s cubic-bezier(.3,1.4,.5,1)}
+.goal .bonus{font:800 20px 'Baloo 2';color:#9a6c00;white-space:nowrap}
+.turn{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:#fff;border-radius:22px;padding:16px 22px;box-shadow:0 8px 24px rgba(120,80,30,.12)}
+.turn .who{font:800 26px 'Baloo 2';line-height:1.05;color:var(--green-d);text-align:center;min-width:150px}
+.turn .who small{display:block;font:700 15px Nunito;color:var(--muted)}
+.turn .slots{display:flex;gap:6px;justify-content:center;margin-top:6px;font-size:26px}
+.slot{width:30px;height:30px;border-radius:50%;border:3px dashed #d9cfbb;display:flex;align-items:center;justify-content:center;font-size:18px}
+.slot.full{border:0;background:var(--green-l);animation:pop .3s}
+.bigin{width:100%;font:800 32px Nunito;padding:14px 20px;border:4px solid #e3dccd;border-radius:18px}
+.bigin:focus{outline:none;border-color:var(--green)}
+.bigin:disabled{background:#f7f4ee}
+.picker{margin-top:12px;background:var(--gold-l);border:3px solid var(--gold);border-radius:16px;padding:14px 18px;font-size:21px;text-align:center;animation:pop .2s}
+.picker .chips{justify-content:center;margin-top:10px}
+.picker .toggle{font-size:20px;border-color:var(--gold);color:#5a4300}
+.picker .toggle:hover{background:var(--gold);color:#2b2000}
+.flash{min-height:36px;text-align:center;font:800 26px 'Baloo 2';margin:10px 0 0}
+.flash.good{color:var(--green)}.flash.bad{color:#c26b00}.flash.star{color:#b07b00}
+.hintbox{margin-top:10px;text-align:center;font-size:22px;background:#eef6ff;border:2px dashed #79a8e0;border-radius:14px;padding:10px;animation:pop .25s}
+.hintbox .letters{font:800 30px 'Baloo 2';letter-spacing:6px;color:#1f5fa8}
+
+/* shelves */
+.shelves{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:18px}
+.shelf{background:#fffaf1;border-radius:18px 18px 8px 8px;padding:12px 12px 0;box-shadow:0 8px 22px rgba(120,80,30,.12);display:flex;flex-direction:column;position:relative;overflow:hidden}
+.shelf.full{box-shadow:0 0 0 4px var(--gold),0 8px 22px rgba(120,80,30,.15)}
+.shelf .sign{display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 24px 'Baloo 2';margin-bottom:6px}
+.shelf .sign small{font:800 14px Nunito;color:var(--muted);background:#f1e8d6;border-radius:99px;padding:2px 10px}
+.items{display:flex;flex-wrap:wrap;align-content:flex-start;gap:8px;min-height:130px;padding-bottom:10px;flex:1}
+.board{height:14px;background:linear-gradient(var(--wood),var(--wood-d));margin:0 -12px;border-top:3px solid #e2ad75}
+.item{position:relative;background:#fff;border-radius:14px;padding:6px 10px 6px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,.08);min-width:74px}
+.item .e{font-size:38px;line-height:1.1;display:block}
+.item .w{font-weight:800;font-size:16px}
+.item.bonus{background:var(--gold-l);box-shadow:0 0 0 2px var(--gold)}
+.item.bonus::after{content:'⭐';position:absolute;top:-8px;left:-6px;font-size:18px}
+.item.new{animation:drop .6s cubic-bezier(.3,1.6,.5,1)}
+.item.wiggle{animation:wiggle .5s 2}
+.item .x{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;border:0;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.25);color:var(--red);font:800 15px Nunito;cursor:pointer;display:none;line-height:24px;padding:0}
+.item:hover .x{display:block}
+@keyframes drop{from{transform:translateY(-120px) scale(.4);opacity:0}}
+@keyframes pop{from{transform:scale(.5);opacity:0}}
+@keyframes wiggle{25%{transform:rotate(-8deg) scale(1.1)}75%{transform:rotate(8deg) scale(1.1)}}
+
+/* overlays */
+.overlay{position:fixed;inset:0;background:rgba(31,107,43,.9);display:none;align-items:center;justify-content:center;z-index:20;text-align:center;color:#fff}
+.overlay.on{display:flex}
+.overlay .big{font:800 min(11vw,110px)/1.05 'Baloo 2',sans-serif;animation:pop .4s ease-out}
+.overlay p{font-size:34px;font-weight:800;margin:14px 0 28px}
+.overlay .walk{font-size:90px;display:inline-block;animation:walk 1.2s infinite alternate ease-in-out}
+@keyframes walk{from{transform:translateX(-40px)}to{transform:translateX(40px)}}
+.confetti{position:fixed;top:-60px;font-size:36px;z-index:40;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(115vh) rotate(720deg)}}
+.toast{position:fixed;left:50%;top:90px;transform:translateX(-50%) translateY(-200px);background:var(--gold);color:#2b2000;padding:14px 26px;border-radius:16px;font:800 26px 'Baloo 2';transition:transform .35s cubic-bezier(.3,1.5,.5,1);z-index:45;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+/* book */
+.book-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+.book-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+.book-card ul{list-style:none;margin:0;padding:0}
+.book-card li{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:10px;font-size:19px}
+.book-card li .en{font-weight:800}
+.book-card li .hu{color:var(--green);font-weight:600;font-size:16px}
+.book-card li.found{background:var(--green-l)}
+.book-card li.missed .en{color:var(--red)}
+.book-card li .em{margin-left:auto;font-size:22px}
+.count-pill{font:800 14px Nunito;background:var(--green-l);color:var(--green-d);border-radius:99px;padding:3px 10px;margin-left:auto}
+.bonus-box{margin-top:12px;border-top:2px dashed #e6ece3;padding-top:10px}
+.bchip{display:inline-block;background:var(--gold-l);border:2px solid var(--gold);border-radius:99px;padding:3px 10px;margin:3px;font-weight:800}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>🛒 Fill the Shop!</h1>
+    <div class="sub">Matura Leader B1 · Unit 6 · Food words</div>
+  </div>
+  <nav>
+    <button data-view="setup">⚙️ Setup</button>
+    <button data-view="play">🛒 Play</button>
+    <button data-view="book">📗 Book list</button>
+    <button id="fsBtn" title="Full screen">⛶</button>
+  </nav>
+</header>
+
+<main>
+  <section class="view" id="v-setup">
+    <div class="setup-grid">
+      <div class="card">
+        <h2>Shelves</h2>
+        <p class="muted" style="margin-top:0">Tap to switch a shelf on or off.</p>
+        <div class="chips" id="catToggles"></div>
+        <h2 style="margin-top:24px">Words for each student</h2>
+        <div class="chips" id="perToggles"></div>
+      </div>
+      <div class="card">
+        <h2>How it works</h2>
+        <ol class="rules-list">
+          <li>The shop is empty! 🛒 We fill the shelves <b>together</b> as a class.</li>
+          <li>Students come out <b>one by one</b> and type food words in English. Books closed! 📕</li>
+          <li>Each word jumps onto the right shelf with a picture.</li>
+          <li>A word that is not in the book? The student puts it on a shelf, and it gets a ⭐.</li>
+          <li>Stuck? Press <b>💡 Hint</b> for a Hungarian clue.</li>
+          <li>Can the class fill every shelf? 🎉</li>
+        </ol>
+      </div>
+    </div>
+    <div class="setup-actions">
+      <button class="btn big" data-go="play">Open the shop →</button>
+      <button class="btn ghost" id="newGame">🧹 Empty the shop (start again)</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-play">
+    <div class="goal">
+      <span class="txt">Our shop: <b id="gNum">0</b> / <span id="gTot">0</span> book words</span>
+      <div class="gbar"><div id="gBar" style="width:0"></div></div>
+      <span class="bonus" id="gBonus"></span>
+    </div>
+    <div class="turn">
+      <div class="who"><small>Student</small><span id="turnNo">#1</span><div class="slots" id="slots"></div></div>
+      <div>
+        <input class="bigin" id="wordIn" autocomplete="off" spellcheck="false" placeholder="Type a food word and press Enter…">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn gold" id="hintBtn">💡 Hint</button>
+        <button class="btn ghost" id="nextBtn">Next ▶</button>
+      </div>
+    </div>
+    <div id="picker"></div>
+    <div id="hint"></div>
+    <div class="flash" id="flash"></div>
+    <div class="shelves" id="shelves"></div>
+  </section>
+
+  <section class="view" id="v-book">
+    <div class="book-tools">
+      <h2 style="margin:0 12px 0 0">📗 The book's list</h2>
+      <button class="toggle" id="huToggle">🇭🇺 Hungarian</button>
+      <button class="toggle" id="missToggle">🔍 Only the missing words</button>
+      <span class="muted" style="font-weight:700">Red = still missing from our shop</span>
+    </div>
+    <div class="book-grid" id="bookGrid"></div>
+  </section>
+</main>
+
+<div class="overlay" id="nextOv"><div>
+  <div class="big" id="cheer">Great job! 👏</div>
+  <p>Next student, come out!</p>
+  <div class="walk">🚶</div><br><br>
+  <button class="btn gold big" id="readyBtn">I'm here! ▶<kbd>Enter</kbd></button>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CATS=[
+ {id:'dairy',name:'Dairy',emoji:'🧀',words:[['butter','vaj'],['cheese','sajt'],['cottage cheese','túró'],['cream','tejszín'],['milk','tej'],['yoghurt','joghurt','yogurt|yoghourt']]},
+ {id:'seafood',name:'Seafood',emoji:'🦐',words:[['crab','rák'],['lobster','homár'],['mussel','kagyló'],['octopus','polip'],['oyster','osztriga'],['shrimp','garnélarák'],['prawn','garnélarák'],['squid','tintahal']]},
+ {id:'veg',name:'Vegetables',emoji:'🥦',words:[['asparagus','spárga'],['beetroot','cékla','beet'],['broccoli','brokkoli','brocolli|brocoli'],['Brussels sprouts','kelbimbó','brussel sprout|sprout'],['cabbage','káposzta'],['cauliflower','karfiol'],['celery','zeller'],['cucumber','uborka'],['garlic','fokhagyma'],['green bean','zöldbab'],['leek','póréhagyma'],['lettuce','fejes saláta'],['mushroom','gomba'],['onion','vöröshagyma'],['spring onion','újhagyma'],['parsley','petrezselyem'],['radish','retek'],['turnip','fehérrépa']]},
+ {id:'meat',name:'Meat',emoji:'🍗',words:[['beef','marhahús'],['chicken','csirkehús'],['fillet','filé','filet'],['ham','sonka'],['pork','sertéshús'],['pork chop','sertésszelet'],['poultry','szárnyas'],['sausage','kolbász'],['steak','bélszín'],['veal','borjúhús']]},
+ {id:'bakery',name:'Bakery',emoji:'🥖',words:[['bread','kenyér'],['roll','zsemle','bread roll'],['white bread','fehér kenyér'],['brown bread','barna kenyér'],['wholemeal bread','teljes kiőrlésű kenyér','wholegrain bread|whole wheat bread']]},
+ {id:'fruit',name:'Fruit',emoji:'🍑',words:[['apricot','sárgabarack'],['blackcurrant','feketeribizli'],['cherry','cseresznye'],['grapefruit','grapefruit'],['grapes','szőlő'],['lime','zöldcitrom'],['mandarin','mandarin'],['nectarine','nektarin'],['peach','őszibarack'],['pear','körte'],['pineapple','ananász'],['plum','szilva'],['raspberry','málna']]}
+];
+const EMOJI_LIST=[['butter','🧈'],['cheese','🧀'],['cottage cheese','🧀'],['cream','🥛'],['milk','🥛'],['yoghurt','🥣'],['yogurt','🥣'],
+ ['crab','🦀'],['lobster','🦞'],['mussel','🦪'],['octopus','🐙'],['oyster','🦪'],['shrimp','🦐'],['prawn','🦐'],['squid','🦑'],
+ ['asparagus','🌱'],['beetroot','🥕'],['broccoli','🥦'],['brussels sprouts','🥬'],['cabbage','🥬'],['cauliflower','🥦'],['celery','🥬'],['cucumber','🥒'],['garlic','🧄'],['green bean','🌱'],['leek','🧅'],['lettuce','🥬'],['mushroom','🍄'],['onion','🧅'],['spring onion','🧅'],['parsley','🌿'],['radish','🥕'],['turnip','🥕'],
+ ['beef','🥩'],['chicken','🍗'],['fillet','🥩'],['ham','🍖'],['pork','🥓'],['pork chop','🍖'],['poultry','🐔'],['sausage','🌭'],['steak','🥩'],['veal','🥩'],
+ ['bread','🍞'],['roll','🥖'],['bread roll','🥖'],['white bread','🍞'],['brown bread','🍞'],['wholemeal bread','🍞'],
+ ['apricot','🍑'],['blackcurrant','🍇'],['cherry','🍒'],['grapefruit','🍊'],['grapes','🍇'],['lime','🍋'],['mandarin','🍊'],['nectarine','🍑'],['peach','🍑'],['pear','🍐'],['pineapple','🍍'],['plum','🍇'],['raspberry','🍓'],
+ ['apple','🍎'],['banana','🍌'],['tomato','🍅'],['carrot','🥕'],['potato','🥔'],['corn','🌽'],['sweetcorn','🌽'],['pepper','🌶️'],['chilli','🌶️'],['chili','🌶️'],['aubergine','🍆'],['eggplant','🍆'],['avocado','🥑'],['strawberry','🍓'],['watermelon','🍉'],['melon','🍈'],['lemon','🍋'],['orange','🍊'],['kiwi','🥝'],['coconut','🥥'],['blueberry','🍇'],['mango','🥭'],['pea','🌱'],['olive','🌿'],['ginger','🌱'],['peanut','🥜'],['bean','🌱'],['pumpkin','🎃'],['spinach','🥬'],['zucchini','🥒'],['courgette','🥒'],['salad','🥗'],
+ ['egg','🥚'],['ice cream','🍦'],['croissant','🥐'],['bagel','🥯'],['pretzel','🥨'],['cake','🍰'],['pizza','🍕'],['fish','🐟'],['salmon','🐟'],['tuna','🐟'],['bacon','🥓'],['turkey','🦃'],['duck','🦆'],['pancake','🥞'],['cookie','🍪'],['biscuit','🍪'],['doughnut','🍩'],['donut','🍩'],['muffin','🧁'],['cupcake','🧁'],['sandwich','🥪'],['toast','🍞'],['baguette','🥖'],['pie','🥧'],['cheesecake','🍰'],['honey','🍯'],['sushi','🍣'],['lamb','🍖'],['meatball','🍖'],['burger','🍔'],['hamburger','🍔'],['hot dog','🌭'],['kefir','🥛'],['sour cream','🥛'],['butter milk','🥛'],['buttermilk','🥛'],['cottage','🧀'],['mozzarella','🧀'],['cheddar','🧀'],['scallop','🐚'],['clam','🐚'],['snail','🐌']];
+const CHEERS=['Great job! 👏','Fantastic! 🌟','Yummy words! 😋','You’re a star! ⭐','Brilliant! 🎉','Super! 💪','Well done! 🙌','Delicious! 🍰'];
+const CONF=['🍎','🥦','🧀','🍞','🍗','🦐','🍇','🥕','🍒','🎉','⭐','🥖'];
+const KEY='fillTheShopUnit6';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const catById=id=>CATS.find(c=>c.id===id);
+
+function singular(w){
+  if(w.length>4&&w.endsWith('ies'))return w.slice(0,-3)+'y';
+  if(/(sh|ch|ss|x|z|o)es$/.test(w))return w.slice(0,-2);
+  if(w.length>3&&w.endsWith('s')&&!/(ss|us)$/.test(w))return w.slice(0,-1);
+  return w;
+}
+function wkey(s){
+  return s.toLowerCase().replace(/[’']/g,'').replace(/[^a-z\s-]/g,' ').replace(/-/g,' ')
+   .split(/\s+/).filter(t=>t&&!['a','an','the','some'].includes(t)).map(singular).join('');
+}
+const INDEX={},EMO={};
+CATS.forEach(c=>c.words.forEach((w,i)=>{
+  [w[0]].concat(w[2]?w[2].split('|'):[]).forEach(f=>{const k=wkey(f);(INDEX[k]=INDEX[k]||[]).push({cat:c.id,i});});
+}));
+EMOJI_LIST.forEach(([w,e])=>EMO[wkey(w)]=e);
+function emojiFor(k,cat){
+  if(EMO[k])return EMO[k];
+  const parts=Object.keys(EMO).filter(x=>x.length>3&&k.includes(x)).sort((a,b)=>b.length-a.length); // e.g. "strawberry yoghurt"
+  return parts.length?EMO[parts[0]]:catById(cat).emoji;
+}
+
+function defaultState(){return{cats:['dairy','seafood','veg','meat','bakery'],perTurn:3,found:[],turn:1,used:0,showHu:true,onlyMissed:false,view:'setup'};}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.cats)return Object.assign(defaultState(),s);}catch(e){}return null;}
+let S=load()||defaultState();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const enabledCats=()=>CATS.filter(c=>S.cats.includes(c.id));
+const totalBook=()=>enabledCats().reduce((a,c)=>a+c.words.length,0);
+const foundBook=()=>S.found.filter(f=>!f.bonus&&S.cats.includes(f.cat)).length;
+const hasBook=(cat,i)=>S.found.some(f=>!f.bonus&&f.cat===cat&&f.i===i);
+
+/* ---------- fx ---------- */
+let audio=null;
+function ensureAudio(){try{audio=audio||new (window.AudioContext||window.webkitAudioContext)();if(audio.state==='suspended')audio.resume();}catch(e){audio=null;}}
+function tone(f,d,when=0,vol=.22,type='triangle'){if(!audio)return;try{const o=audio.createOscillator(),g=audio.createGain(),t0=audio.currentTime+when;o.type=type;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(vol,t0);g.gain.exponentialRampToValueAtTime(.001,t0+d);o.connect(g);g.connect(audio.destination);o.start(t0);o.stop(t0+d+.05);}catch(e){}}
+const sPop=()=>{tone(520,.08);tone(880,.12,.06);};
+const sStar=()=>[660,880,1175].forEach((f,i)=>tone(f,.14,i*.08));
+const sFanfare=()=>[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i===5?.6:.15,i*.13,.25));
+const sOops=()=>tone(260,.18,0,.15,'sine');
+function confetti(n=40){
+  for(let i=0;i<n;i++){const s=document.createElement('span');s.className='confetti';s.textContent=CONF[Math.floor(Math.random()*CONF.length)];
+    s.style.left=Math.random()*100+'vw';s.style.animationDuration=(2+Math.random()*2.2)+'s';s.style.animationDelay=Math.random()*.6+'s';s.style.fontSize=(24+Math.random()*26)+'px';
+    document.body.appendChild(s);setTimeout(()=>s.remove(),5200);}
+}
+let toastT;
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2600);}
+
+/* ---------- navigation ---------- */
+function go(v){
+  S.view=v;save();
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('on',el.id==='v-'+v));
+  document.querySelectorAll('nav [data-view]').forEach(b=>b.classList.toggle('on',b.dataset.view===v));
+  ({setup:renderSetup,play:renderPlay,book:renderBook})[v]();
+}
+
+/* ---------- setup ---------- */
+function renderSetup(){
+  $('#catToggles').innerHTML=CATS.map(c=>`<button class="toggle ${S.cats.includes(c.id)?'on':''}" data-cattoggle="${c.id}">${c.emoji} ${c.name}</button>`).join('');
+  $('#perToggles').innerHTML=[1,2,3,5,0].map(n=>`<button class="toggle ${S.perTurn===n?'on':''}" data-per="${n}">${n?n+(n>1?' words':' word'):'No limit'}</button>`).join('');
+}
+let confirmNew=false;
+
+/* ---------- play ---------- */
+let picking=null,newKey=null,wiggleKey=null,hint=null;
+function setFlash(t,cls){const f=$('#flash');f.textContent=t;f.className='flash '+(cls||'');}
+function submitWord(text){
+  if(picking)return;
+  text=text.trim();const k=wkey(text);if(!k)return;
+  ensureAudio();
+  if(S.perTurn&&S.used>=S.perTurn){showNext();return;}
+  const dup=S.found.find(f=>f.key===k||(INDEX[k]||[]).some(h=>!f.bonus&&f.cat===h.cat&&f.i===h.i));
+  if(dup){wiggleKey=dup.key;sOops();setFlash('“'+dup.text+'” is already in the shop! Try another one 🙂','bad');renderShelves();return;}
+  const hits=(INDEX[k]||[]).filter(h=>S.cats.includes(h.cat));
+  if(hits.length){
+    const h=hits[0],c=catById(h.cat),wd=c.words[h.i][0];
+    S.found.push({text:wd,key:k,cat:h.cat,i:h.i,bonus:false,emoji:emojiFor(wkey(wd),h.cat)});
+    afterAdd(k,'✓ '+wd+'! '+emojiFor(wkey(wd),h.cat),'good',h.cat);
+  }else if(INDEX[k]){
+    sOops();setFlash('That shelf is closed today 🙂 Try another word!','bad');
+  }else{
+    picking={text:text.toLowerCase(),key:k};renderPicker();
+  }
+}
+function pickCat(cat){
+  if(!picking)return;
+  if(cat){S.found.push({text:picking.text,key:picking.key,cat,bonus:true,emoji:emojiFor(picking.key,cat)});const t=picking.text;picking=null;renderPicker();afterAdd(t&&wkey(t),'⭐ A new word: '+t+'!','star',cat,true);}
+  else{picking=null;renderPicker();setFlash('','');$('#wordIn').focus();}
+}
+function afterAdd(k,msg,cls,cat,bonus){
+  newKey=k;S.used++;hint=null;
+  bonus?sStar():sPop();setFlash(msg,cls);
+  const c=catById(cat),n=foundBook();
+  const full=!bonus&&c.words.every((w,i)=>hasBook(cat,i));
+  save();renderPlay();
+  if(n===totalBook()&&!bonus){setTimeout(()=>{sFanfare();confetti(90);toast('🏆 The whole shop is full! Amazing class! 🏆');},300);}
+  else if(full){setTimeout(()=>{sFanfare();confetti(50);toast(c.emoji+' The '+c.name+' shelf is full! 🎉');},300);}
+  else if(S.found.length%10===0){setTimeout(()=>{sFanfare();confetti(35);toast('🎉 '+S.found.length+' things in our shop!');},300);}
+  if(S.perTurn&&S.used>=S.perTurn)setTimeout(showNext,full||S.found.length%10===0?2200:1100);
+}
+function showNext(){
+  if($('#nextOv').classList.contains('on'))return;
+  $('#cheer').textContent=CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  $('#nextOv').classList.add('on');$('#wordIn').blur();
+}
+function nextStudent(){
+  $('#nextOv').classList.remove('on');
+  S.turn++;S.used=0;picking=null;hint=null;save();
+  setFlash('','');renderPlay();ensureAudio();tone(784,.1);
+}
+function showHint(){
+  const left=[];enabledCats().forEach(c=>c.words.forEach((w,i)=>{if(!hasBook(c.id,i))left.push({c,w});}));
+  if(!left.length){hint={done:true};return renderHint();}
+  const pick=left[Math.floor(Math.random()*left.length)];
+  hint={c:pick.c,w:pick.w};ensureAudio();tone(1047,.1);renderHint();$('#wordIn').focus();
+}
+function renderHint(){
+  if(!hint){$('#hint').innerHTML='';return;}
+  if(hint.done){$('#hint').innerHTML='<div class="hintbox">🎉 No hints left. Every book word is in the shop!</div>';return;}
+  const en=hint.w[0],letters=en.split('').map((ch,i)=>ch===' '?'&nbsp;&nbsp;':(i===0?esc(ch.toUpperCase()):'_')).join(' ');
+  $('#hint').innerHTML=`<div class="hintbox">💡 ${hint.c.emoji} <b>${hint.c.name}</b> · 🇭🇺 <b>${esc(hint.w[1])}</b> → <span class="letters">${letters}</span></div>`;
+}
+function renderPicker(){
+  const inp=$('#wordIn');
+  if(!picking){$('#picker').innerHTML='';inp.disabled=false;return;}
+  inp.disabled=true;
+  $('#picker').innerHTML=`<div class="picker">🤔 <b>“${esc(picking.text)}”</b> is not in our book. Which shelf does it go on?
+    <div class="chips">${enabledCats().map((c,n)=>`<button class="toggle" data-pick="${c.id}">${c.emoji} ${c.name}<kbd>${n+1}</kbd></button>`).join('')}<button class="toggle" data-pick="">✗ Oops, delete it<kbd>Esc</kbd></button></div></div>`;
+}
+function renderPlay(){
+  const tot=totalBook(),n=foundBook(),bonus=S.found.filter(f=>f.bonus&&S.cats.includes(f.cat)).length;
+  $('#gNum').textContent=n;$('#gTot').textContent=tot;
+  $('#gBar').style.width=(tot?n/tot*100:0)+'%';
+  $('#gBonus').textContent=bonus?`+ ⭐ ${bonus} new word${bonus>1?'s':''}`:'';
+  $('#turnNo').textContent='#'+S.turn;
+  $('#slots').innerHTML=S.perTurn?Array.from({length:S.perTurn},(_,i)=>`<span class="slot ${i<S.used?'full':''}">${i<S.used?'✓':''}</span>`).join(''):'';
+  renderPicker();renderHint();renderShelves();
+  if(!picking&&S.view==='play'&&!$('#nextOv').classList.contains('on'))setTimeout(()=>$('#wordIn').focus(),20);
+}
+function renderShelves(){
+  $('#shelves').innerHTML=enabledCats().map(c=>{
+    const items=S.found.map((f,j)=>({f,j})).filter(o=>o.f.cat===c.id);
+    const bk=c.words.filter((w,i)=>hasBook(c.id,i)).length,full=bk===c.words.length;
+    return `<div class="shelf ${full?'full':''}"><div class="sign">${c.emoji} ${c.name}<small>${bk}/${c.words.length}${full?' 🎉':''}</small></div>
+      <div class="items">${items.map(({f,j})=>`<div class="item ${f.bonus?'bonus':''} ${f.key===newKey?'new':''} ${f.key===wiggleKey?'wiggle':''}"><span class="e">${f.emoji}</span><span class="w">${esc(f.text)}</span><button class="x" data-del="${j}" title="Remove (wrong word)">×</button></div>`).join('')}</div>
+      <div class="board"></div></div>`;
+  }).join('');
+  newKey=null;wiggleKey=null;
+}
+
+/* ---------- book ---------- */
+function renderBook(){
+  $('#huToggle').classList.toggle('on',S.showHu);
+  $('#missToggle').classList.toggle('on',S.onlyMissed);
+  $('#bookGrid').innerHTML=enabledCats().map(c=>{
+    let found=0;
+    const items=c.words.map((w,i)=>{
+      const ok=hasBook(c.id,i);if(ok)found++;
+      if(S.onlyMissed&&ok)return '';
+      return `<li class="${ok?'found':'missed'}"><span class="en">${esc(w[0])}</span>${S.showHu?`<span class="hu">– ${esc(w[1])}</span>`:''}<span class="em">${ok?emojiFor(wkey(w[0]),c.id):''}</span></li>`;
+    }).join('');
+    const bonus=S.found.filter(f=>f.bonus&&f.cat===c.id);
+    return `<div class="card book-card"><h3 style="display:flex;align-items:center">${c.emoji} ${c.name}<span class="count-pill">${found}/${c.words.length}</span></h3><ul>${items||'<li class="muted">Every word is in the shop! 🎉</li>'}</ul>${bonus.length?`<div class="bonus-box"><div class="label" style="margin-top:0">⭐ Our new words</div>${bonus.map(b=>`<span class="bchip">${b.emoji} ${esc(b.text)}</span>`).join('')}</div>`:''}</div>`;
+  }).join('');
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const d=b.dataset;
+  if(d.view)return go(d.view);
+  if(d.go)return go(d.go);
+  if(d.cattoggle){
+    const on=S.cats.includes(d.cattoggle);
+    if(on&&S.cats.length===1)return toast('Keep at least one shelf 🙂');
+    S.cats=on?S.cats.filter(x=>x!==d.cattoggle):CATS.map(c=>c.id).filter(id=>id===d.cattoggle||S.cats.includes(id));
+    save();return renderSetup();
+  }
+  if(d.per!==undefined){S.perTurn=Number(d.per);save();return renderSetup();}
+  if(d.pick!==undefined)return pickCat(d.pick);
+  if(d.del!==undefined){S.found.splice(+d.del,1);save();return renderPlay();}
+});
+$('#wordIn').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const v=e.target.value;e.target.value='';submitWord(v);}});
+document.addEventListener('keydown',e=>{
+  if(S.view!=='play')return;
+  if($('#nextOv').classList.contains('on')){if(e.key==='Enter'||e.key===' '){e.preventDefault();nextStudent();}return;}
+  if(picking){
+    const cats=enabledCats(),n=parseInt(e.key,10);
+    if(n>=1&&n<=cats.length){e.preventDefault();pickCat(cats[n-1].id);}
+    else if(e.key==='Escape'){e.preventDefault();pickCat('');}
+  }
+});
+$('#hintBtn').addEventListener('click',showHint);
+$('#nextBtn').addEventListener('click',showNext);
+$('#readyBtn').addEventListener('click',nextStudent);
+$('#newGame').addEventListener('click',e=>{
+  const b=e.currentTarget;
+  if(!confirmNew){confirmNew=true;b.textContent='⚠️ Click again to empty the shop';b.classList.add('red');setTimeout(()=>{confirmNew=false;b.textContent='🧹 Empty the shop (start again)';b.classList.remove('red');},3000);return;}
+  confirmNew=false;S.found=[];S.turn=1;S.used=0;picking=null;hint=null;save();b.textContent='🧹 Empty the shop (start again)';b.classList.remove('red');toast('🛒 The shop is empty. Ready!');
+});
+$('#huToggle').addEventListener('click',()=>{S.showHu=!S.showHu;save();renderBook();});
+$('#missToggle').addEventListener('click',()=>{S.onlyMissed=!S.onlyMissed;save();renderBook();});
+$('#fsBtn').addEventListener('click',()=>{try{const r=document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();if(r&&r.catch)r.catch(()=>{});}catch(e){}});
+
+go(S.view||'setup');
+</script>
+</body>
+</html>
